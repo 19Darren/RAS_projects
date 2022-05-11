@@ -1,5 +1,5 @@
 # RAS_projects
-# Two projects (Tello "Race" Project and Open Project)
+Two projects (Tello "Race" Project and Open Project)
 
 # For Tello Project:
 1. Instal dependencies:
