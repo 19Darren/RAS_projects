@@ -4,7 +4,9 @@ Two projects (Tello Project and Open Project)
 # For Tello Project:
 Simulated Implementation of Tello Drone Automatically Passing Through Gates
 Our drone successfully navigated through single or dual gates positioned at various initial locations and angles (90 degrees and 60 degrees). This was achieved by detecting the gates in captured images, drawing the smallest rectangular outline and identifying the center of the gate, and subsequently calculating the outline's area to determine the flight direction.
-
+<div align='center'>
+      <video src='https://github.com/19Darren/RAS_projects/blob/main/Open_project/project.mp4' width='200'/>
+</div>
 
 # For Open Project:
 Implementation of Autonomous Driving Along a Track for the Turtlebot Waffle and Real-time Communication with Tello Drone
