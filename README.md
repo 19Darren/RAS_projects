@@ -11,3 +11,4 @@ Implementation of Autonomous Driving Along a Track for the Turtlebot Waffle and 
 In simulation experiments, we designed the turtlebot waffle to automatically drive along the drawn trajectory, and make the turtlebot waffle subscribe to the camera of the DJI Tello drone to broadcast the car in real-time.
 Our Tello drone model and turtlebot waffle model need to be installed in ros1 and ros2 systems respectively, so let the two models run in different systems and communicate with each other by subscribing to topics.
 <video src="https://github.com/19Darren/RAS_projects/blob/main/Open_project/project.mp4"></video>
+<iframe src="https://github.com/19Darren/RAS_projects/blob/main/Open_project/project.mp4" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
