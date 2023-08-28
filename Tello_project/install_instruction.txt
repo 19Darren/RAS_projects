@@ -1,0 +1,120 @@
+Open project needs two versions of ROS: ROS noetic and ROS2 foxy
+
+ROS noetic for Waffle bot simulation and ROS2 foxy for tello_drone simulation
+
+We used Ubuntu20.04
+
+Environment Setup:
+	ROS noetic
+	
+		1.sudo sh -c '. /etc/lsb-release && echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list'
+		
+		2.sudo apt update
+		sudo apt install ros-noetic-desktop-full
+		
+		3. source /opt/ros/noetic/setup.bash
+		
+		4.sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+		sudo apt install python3-rosdep
+		sudo rosdep init
+		rosdep update
+	
+	ROS2 foxy:
+	
+		1. sudo locale-gen en_US en_US.UTF-8
+		sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 export LANG=en_US.UTF-8
+
+		2.sudo apt update
+		sudo apt install curl gnupg2 lsb-release
+		sudo sh -c '. /etc/lsb-release && echo "deb http://mirrors.tuna.tsinghua.edu.cn/ros2/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list'
+		
+		3.sudo apt update
+		sudo apt install ros-foxy-desktop
+		sudo apt install python3-colcon-common-extensions
+		
+		
+		4.source /opt/ros/foxy/setup.bash
+		
+		5.sudo apt update
+		sudo apt install python3-argcomplete
+		sudo apt update
+		sudo apt install ros-foxy-rmw-connext-cpp
+		
+		6.sudo apt update
+		sudo apt install ros-foxy-ros1-bridge
+		
+	****In order to use ROS1 and ROS2 at the same time, do the following changes****
+	1.sudo gedit ~/.bashrc
+	
+	***add the following lines to the end of /.bashrc which will help you to choose one of the ROSs whenever you open a new terminal***
+	
+	echo "ros noetic(1) or ros2 foxy(2)?"
+	read edition
+	if [ "$edition" -eq "1" ];then
+	  source /opt/ros/noetic/setup.bash
+	else
+	  source /opt/ros/foxy/setup.bash
+	fi
+
+
+Tello Drone Setup(choose 2, that is ROS2, whenever open a new terminal in this section):
+	
+	1.sudo apt install gazebo11 libgazebo11 libgazebo11-dev
+	sudo apt install libasio-dev
+	sudo apt install ros-foxy-cv-bridge ros-foxy-camera-calibration-parsers ros-foxy-gazebo-ros-pkgs
+	sudo apt install libignition-rendering3 
+	pip3 install transformations
+	
+	
+	2. cd ~/tello_ros_ws/src/
+	*** download the file named tello-ros2-gazebo to path:~/tello_ros_ws/src/ ***
+	cd ~/tello_ros_ws/
+	source /opt/ros/foxy/setup.bash
+	colcon build
+	
+	
+	3. source deactivate
+	cd ~/tello_ros_ws
+	source install/setup.bash
+	export GAZEBO_MODEL_PATH=${PWD}/install/tello_gazebo/share/tello_gazebo/models
+	source /usr/share/gazebo/setup.sh
+	ros2 launch tello_gazebo simple_launch.py
+	
+	4.(a new terminal) # takeoff the tello
+	cd ~/tello_ros_ws
+	source install/setup.bash
+	export GAZEBO_MODEL_PATH=${PWD}/install/tello_gazebo/share/tello_gazebo/models
+	source /usr/share/gazebo/setup.sh
+	ros2 service call /drone1/tello_action tello_msgs/TelloAction "{cmd: 'takeoff'}"
+	
+	# Then add the Gate model (Gate_90,Gate_60) in the gazebo world.
+
+	
+	5.# to bridge topics of both ROS1 and ROS2, so that tello can subscribe the /cmd_vel topic of Waffle and then tello can fly simultaneously
+	source /opt/ros/noetic/setup.bash
+	source /opt/ros/foxy/setup.bash
+	ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
+
+
+Waffle bot Setup (choose 1, that is ROS1, whenever open a new terminal in this section):
+	
+	1. cd ~/catkin_ws/src/
+	*** download the file named learning_topic to path:~/catkin_ws/src/ ***
+	
+	2. cd ~/catkin_ws/ && catkin_make
+	chmod +x ~/catkin_ws/src/learning_topic/scripts/*.py
+	
+	3. export GAZEBO_MASTER_URI=http://localhost:10085
+	source devel/setup.bash
+	roslaunch learning_topic 0course.launch
+	
+	4.(a new terminal)  # run the tello pass the green gates
+	cd ~/catkin_ws/ && source devel/setup.bash
+	rosrun learning_topic tellopassgate.py
+
+
+
+	
+	
+	
+
